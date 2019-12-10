@@ -1,0 +1,3 @@
+[submodule "frida-java-bridge"]
+	path = frida-java-bridge
+	url = https://github.com/H4oK3/frida-java-bridge.git
