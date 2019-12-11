@@ -7,6 +7,12 @@ function miniLog(methodname, arg_type, arg_dump, ret_type, retvar) {
     console.log(arg_dump)
 }
 
+function dumpObject(obj){
+    for (var cn in obj){
+        console.log(String(cn) + " : " + Object.keys(obj[cn]))
+    }
+}
+
 Java.perform(() => {
     console.log("In da house..hook_tpl.js")
 
@@ -17,8 +23,16 @@ Java.perform(() => {
             var active_classloader = ret_class.getClassLoader();
             var orig_cl = Java.classFactory.loader;
             Java.classFactory.loader = active_classloader;
-            var c_DyHello_hook = Java.use("com.hao.hello.DyHello", {useLoaderCache : 'enable'});
-            console.log(c_DyHello_hook.$classWrapper.__name__)
+            // console.log("++++++++++++++++++++++++++++++++++")
+            // if(Java.classFactory.classes_loaders !== undefined){
+            //     dumpObject(Java.classFactory.classes_loaders)
+            // }
+            // else{
+            //     console.log("Empty classes_loaders..")
+            // }
+            // console.log("++++++++++++++++++++++++++++++++++")
+            var c_DyHello_hook = Java.use("com.hao.hello.DyHello", { useLoaderCache: 'enable' });
+            // console.log(c_DyHello_hook.$classWrapper.__name__)
             var overloadz_DyHello_hook = eval("c_DyHello_hook.hello.overloads");
             var ovl_count_DyHello_hook = overloadz_DyHello_hook.length;
             var c_DyHello_hook_hello_hook = null
@@ -44,8 +58,8 @@ Java.perform(() => {
                         retval = null
                         console.log("Exception - cannot compute retval.." + String(err))
                     }
-
-                    miniLog("com.hao.hello.DyHello.hello", String(arg_type), String(arg_dump), String(ret_type), String(retval))
+                    console.log("[+] com.hao.hello.DyHello.hello invoked.." + String(retval) )
+                    // miniLog("com.hao.hello.DyHello.hello", String(arg_type), String(arg_dump), String(ret_type), String(retval))
                     return retval;
                 }
             }

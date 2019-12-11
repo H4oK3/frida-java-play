@@ -57,20 +57,7 @@ public void invokeDexOnce(View view) {
 Install the overloads.apk 
 Put `dyhello.dex` file under /data/local/tmp
 
-## Experimental patch:
-https://github.com/H4oK3/frida-java-bridge/commit/47b8cae7c33b05692fd1f2300ea7308068740233
-
-## Existing problem:
-- invokeDexOnce -> invokeDexOnce -> invokeDexOnce: Works as designed
-- invokeDexOnce -> invokeDex -> invokeDexOnce : the 2nd invokeDexOnce has more than one patches 
-    ~~~
-    [+]com.hao.hello.DyHello.hello()
-    Return: (java.lang.String)Hello from DyHello! 10:58:22.193
-
-    [+]com.hao.hello.DyHello.hello()
-    Return: (java.lang.String)Hello from DyHello! 10:58:22.193
-    ~~~
-    + It applies patches over patched classes?
-
-- invokeDexOnce -> detach/%reload -> invokeDexOnce : Crashes the process
-    + Clean up failed?
+## Remaining problems:
+`.hashCode()` is in use; chances that classloaders with same name and same hash are low;
+However if a custom classloaer with custom `.hashCode()` func is in use; then it might fail;
+I was not able to find a better solution to generate unique class identifier yet
